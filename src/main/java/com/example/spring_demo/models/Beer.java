@@ -1,23 +1,32 @@
 package com.example.spring_demo.models;
 
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+
+import java.util.Objects;
 
 public class Beer {
     @Positive(message = "id should be positive!")
     private int id;
-    @NotNull(message = "entity can't be empty")
-    @Size(min = 2, max = 20, message = "name should be between 2 and 20 symbols!")
     private String name;
-    @Positive(message = "abv should be positive!")
     private double abv;
+    private Style style;
 
+    public Beer() {
+    }
 
-    public Beer(int id, String name, double abv) {
+    public Beer(int id, String name, double abv, Style style) {
         this.id = id;
         this.name = name;
         this.abv = abv;
+        this.style = style;
+    }
+
+    public Style getStyle() {
+        return style;
+    }
+
+    public void setStyle(Style style) {
+        this.style = style;
     }
 
     public int getId() {
@@ -42,5 +51,18 @@ public class Beer {
 
     public void setAbv(double abv) {
         this.abv = abv;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Beer beer = (Beer) o;
+        return id == beer.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
