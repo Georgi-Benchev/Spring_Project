@@ -19,10 +19,10 @@ public class BeerServiceImpl implements BeerService {
         this.beerRepository = beerRepository;
     }
 
-
     @Override
-    public List<Beer> getAll() {
-        return beerRepository.getAll();
+    public List<Beer> getAll(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String orderBy) {
+        return beerRepository.get(name, minAbv, maxAbv, styleId, sortBy, orderBy);
+
     }
 
     @Override
