@@ -13,6 +13,7 @@ public class BeerDTO {
     @Positive(message = "StyleId should be positive")
     private int styleId;
 
+
     public BeerDTO() {
     }
 

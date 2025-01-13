@@ -1,6 +1,7 @@
 package com.example.spring_demo.services;
 
 import com.example.spring_demo.models.Beer;
+import com.example.spring_demo.models.User;
 
 import java.util.List;
 
@@ -11,10 +12,10 @@ public interface BeerService {
 
     Beer getByName(String name);
 
-    void create(Beer beer);
+    void create(Beer beer, User user);
 
-    void update(Beer beer);
+    void update(Beer beer, User user);
 
-    void delete(int id);
+    void delete(int id, User user);
 
 }
