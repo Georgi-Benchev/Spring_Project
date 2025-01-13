@@ -2,6 +2,7 @@ package com.example.spring_demo.repositorys;
 
 import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.models.Beer;
+import com.example.spring_demo.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,12 +20,15 @@ public class BeerRopositoryImpl implements BeerRepository {
 
 
     @Autowired
-    public BeerRopositoryImpl(StyleRepository styleRepository) {
+    public BeerRopositoryImpl(StyleRepository styleRepository, UserRepository userRepository) {
         this.beers = new ArrayList<>();
 
-        beers.add(new Beer(1, "Corona", 5.5, styleRepository.getById(1)));
-        beers.add(new Beer(2, "Stella", 5.0, styleRepository.getById(2)));
-        beers.add(new Beer(3, "Brixton", 4.5, styleRepository.getById(3)));
+        beers.add(new Beer(1, "Corona", 5.5
+                , styleRepository.getById(1), userRepository.getById(1)));
+        beers.add(new Beer(2, "Stella", 5.0
+                , styleRepository.getById(2), userRepository.getById(2)));
+        beers.add(new Beer(3, "Brixton", 4.5
+                , styleRepository.getById(3), userRepository.getById(3)));
     }
 
 
@@ -57,8 +61,9 @@ public class BeerRopositoryImpl implements BeerRepository {
 
 
     @Override
-    public void create(Beer beer) {
+    public void create(Beer beer, User user) {
         beer.setId(++nextId);
+        beer.setCreatedBy(user);
         beers.add(beer);
     }
 
