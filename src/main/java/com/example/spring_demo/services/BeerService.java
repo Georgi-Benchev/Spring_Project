@@ -6,16 +6,18 @@ import com.example.spring_demo.models.User;
 import java.util.List;
 
 public interface BeerService {
-    List<Beer> getAll(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String orderBy);
+    /*
+        List<Beer> getAll(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String orderBy);
+    */
+    List<Beer> getAll();
 
     Beer getBeerById(int id);
 
-    Beer getByName(String name);
+    Beer create(Beer beer, User user);
 
-    void create(Beer beer, User user);
+    Beer update(Beer beer, User user);
 
-    void update(Beer beer, User user);
+    Beer delete(int id, User user);
 
-    void delete(int id, User user);
-
+    Beer getBeerByName(String name);
 }
