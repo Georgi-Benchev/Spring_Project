@@ -1,8 +1,11 @@
-package com.example.spring_demo.repositorys;
+package com.example.spring_demo.repositorys.listVersions;
 
 import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.models.Beer;
 import com.example.spring_demo.models.User;
+import com.example.spring_demo.repositorys.BeerRepository;
+import com.example.spring_demo.repositorys.StyleRepository;
+import com.example.spring_demo.repositorys.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,14 +16,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class BeerRopositoryImpl implements BeerRepository {
+public class BeerRopositoryImplWithList implements BeerRepository {
 
     private int nextId = 3;
     private final List<Beer> beers;
 
 
     @Autowired
-    public BeerRopositoryImpl(StyleRepository styleRepository, UserRepository userRepository) {
+    public BeerRopositoryImplWithList(StyleRepository styleRepository, UserRepository userRepository) {
         this.beers = new ArrayList<>();
 
         beers.add(new Beer(1, "Corona", 5.5
@@ -32,15 +35,18 @@ public class BeerRopositoryImpl implements BeerRepository {
     }
 
 
-    @Override
-    public List<Beer> get(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String orderBy) {
-        List<Beer> result = beers;
-        result = filterByName(result, name);
-        result = filterByAbv(result, minAbv, maxAbv);
-        result = filterByStyle(result, styleId);
-        result = sortBy(result, sortBy);
-        result = order(result, orderBy);
-        return result;
+    /*   @Override
+       public List<Beer> getAll(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String orderBy) {
+           List<Beer> result = beers;
+           result = filterByName(result, name);
+           result = filterByAbv(result, minAbv, maxAbv);
+           result = filterByStyle(result, styleId);
+           result = sortBy(result, sortBy);
+           result = order(result, orderBy);
+           return result;
+       }*/
+    public List<Beer> getAll() {
+        return beers;
     }
 
     @Override
@@ -68,8 +74,8 @@ public class BeerRopositoryImpl implements BeerRepository {
     }
 
     @Override
-    public void update(Beer beer) {
-        Beer beerToUpdate = getBeerById(beer.getId());
+    public void update(Beer beer, int id) {
+        Beer beerToUpdate = getBeerById(id);
         beerToUpdate.setName(beer.getName());
         beerToUpdate.setAbv(beer.getAbv());
         beerToUpdate.setStyle(beer.getStyle());
