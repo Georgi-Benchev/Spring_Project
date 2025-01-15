@@ -2,44 +2,54 @@ package com.example.spring_demo.repositorys;
 
 import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.models.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+@Primary
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    List<User> users;
+    private final SessionFactory sessionFactory;
 
-    public UserRepositoryImpl() {
-        users = new ArrayList<>();
-
-        users.add(new User(1, "Pesho", true));
-        users.add(new User(2, "Gosho", true));
-        users.add(new User(3, "Vanko", false));
-        users.add(new User(4, "Danko", false));
+    @Autowired
+    public UserRepositoryImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
-
 
     @Override
     public List<User> getAll() {
-        return new ArrayList<>(users);
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("From User", User.class).list();
+        }
     }
 
     @Override
     public User getById(int id) {
-        return users.stream()
-                .filter(user -> user.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("User", "id", String.valueOf(id)));
+        try (Session session = sessionFactory.openSession()) {
+            User user = session.get(User.class, id);
+            if (user == null) {
+                throw new EntityNotFoundException("User", id);
+            }
+            return user;
+        }
     }
 
     @Override
     public User getByUsername(String username) {
-        return users.stream()
-                .filter(user -> user.getUsername().equals(username))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("User", "username", username));
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> user = session.createQuery("From User where username = :username", User.class);
+            user.setParameter("username", username);
+            List<User> users = user.list();
+            return users.get(0);
+        } catch (IndexOutOfBoundsException e) {
+            throw new EntityNotFoundException("User", "username", username);
+        }
     }
 }
