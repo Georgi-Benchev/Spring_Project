@@ -2,32 +2,43 @@ package com.example.spring_demo.repositorys;
 
 import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.models.Style;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Primary
 @Repository
 public class StyleRepositoryImpl implements StyleRepository {
 
-    private List<Style> styles;
+    private final SessionFactory sessionFactory;
 
-    public StyleRepositoryImpl(List<Style> styles) {
-        this.styles = styles;
 
-        styles.add(new Style(1, "Cold brew"));
-        styles.add(new Style(2, "Ale"));
-        styles.add(new Style(3, "Dark"));
+    @Autowired
+    public StyleRepositoryImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
+
 
     @Override
     public List<Style> getAll() {
-        return styles;
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("From Style", Style.class).list();
+        }
+
     }
 
     @Override
     public Style getById(int id) {
-        return styles.stream().filter(style -> style.getId() == id).findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Style", "id", String.valueOf(id)));
-
+        try (Session session = sessionFactory.openSession()) {
+            Style style = session.get(Style.class, id);
+            if (style == null) {
+                throw new EntityNotFoundException("Style", id);
+            }
+            return style;
+        }
     }
 }
