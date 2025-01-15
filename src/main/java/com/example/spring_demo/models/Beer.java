@@ -1,18 +1,39 @@
 package com.example.spring_demo.models;
 
-import jakarta.validation.constraints.Positive;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
+@Entity
+@Table(name = "beers")
 public class Beer {
-    @Positive(message = "id should be positive!")
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "beer_id")
     private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "abv")
     private double abv;
+
+    @ManyToOne
+    @JoinColumn(name = "style_id")
     private Style style;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
     private User createdBy;
 
     public Beer() {
+    }
+
+    public Beer(int id, String name, double abv) {
+        this.id = id;
+        this.name = name;
+        this.abv = abv;
     }
 
     public Beer(int id, String name, double abv, Style style, User creator) {
