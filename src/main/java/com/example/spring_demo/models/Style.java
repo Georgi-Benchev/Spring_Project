@@ -1,10 +1,18 @@
 package com.example.spring_demo.models;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "styles")
 public class Style {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "style_id")
     private int id;
+
+    @Column(name = "name")
     private String name;
 
     public Style() {
