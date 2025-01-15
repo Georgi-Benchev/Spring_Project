@@ -21,7 +21,7 @@ public class AuthenticationHelper {
 
     public User tryGetUser(HttpHeaders headers) {
         if (!headers.containsKey(AUTHORIZATION)) {
-            throw new UnauthorizedAccessException("Invalid authentication");
+            throw new UnauthorizedAccessException("Invalid authentication(you have no access)");
         }
 
         try {
