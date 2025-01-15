@@ -1,6 +1,6 @@
 package com.example.spring_demo.services;
 
-import com.example.spring_demo.exceptions.DublicateEntityException;
+import com.example.spring_demo.exceptions.DuplicateEntityException;
 import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.exceptions.UnauthorizedAccessException;
 import com.example.spring_demo.models.Beer;
@@ -21,10 +21,13 @@ public class BeerServiceImpl implements BeerService {
         this.beerRepository = beerRepository;
     }
 
-    @Override
+ /*   @Override
     public List<Beer> getAll(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String orderBy) {
         return beerRepository.get(name, minAbv, maxAbv, styleId, sortBy, orderBy);
+    }*/
 
+    public List<Beer> getAll() {
+        return beerRepository.getAll();
     }
 
     @Override
@@ -32,14 +35,9 @@ public class BeerServiceImpl implements BeerService {
         return beerRepository.getBeerById(id);
     }
 
-    @Override
-    public Beer getByName(String name) {
-        /*return beerRepository.getByName(name);*/
-        return null;
-    }
 
     @Override
-    public void create(Beer beer, User user) {
+    public Beer create(Beer beer, User user) {
         boolean idAlreadyExists = true;
         boolean nameAlreadyExists = true;
 
@@ -55,19 +53,20 @@ public class BeerServiceImpl implements BeerService {
         }
 
         if (idAlreadyExists) {
-            throw new DublicateEntityException("Beer", "id", String.valueOf(beer.getId()));
+            throw new DuplicateEntityException("Beer", "id", String.valueOf(beer.getId()));
         }
         if (nameAlreadyExists) {
-            throw new DublicateEntityException("Beer", "name", beer.getName());
+            throw new DuplicateEntityException("Beer", "name", beer.getName());
         }
-
+        beer.setCreatedBy(user);
         beerRepository.create(beer, user);
+        return beer;
     }
 
 
     @Override
-    public void update(Beer beer, User user) {
-        validateUser(user, beerRepository.getByName(beer.getName()));
+    public Beer update(Beer beer, User user) {
+        validateUser(user, beer.getId());
         boolean beerAlreadyExists = true;
         try {
             Beer local = beerRepository.getByName(beer.getName());
@@ -78,24 +77,32 @@ public class BeerServiceImpl implements BeerService {
             beerAlreadyExists = false;
         }
         if (beerAlreadyExists) {
-            throw new DublicateEntityException("Beer", "name", beer.getName());
+            throw new DuplicateEntityException("Beer", "name", beer.getName());
         }
 
-        beerRepository.update(beer);
+        beerRepository.update(beer, beer.getId());
+        return beer;
     }
 
     @Override
-    public void delete(int id, User user) {
-        Beer beerToDelete = getBeerById(id);
-        validateUser(user, beerToDelete);
+    public Beer delete(int id, User user) {
+        validateUser(user, id);
+        Beer beer = getBeerById(id);
+
         beerRepository.delete(id);
+        return beer;
     }
 
-    private void validateUser(User user, Beer beer) {
-        if (!user.isAdmin() || beer.getCreatedBy().getId() != user.getId()) {
-            throw new UnauthorizedAccessException(
-                    "You can update the beer only if you are Admin or you added the beer");
-        }
+    @Override
+    public Beer getBeerByName(String name) {
+        return beerRepository.getByName(name);
+    }
 
+    private void validateUser(User user, int id) {
+        Beer beer = beerRepository.getBeerById(id);
+        if (!user.isAdmin() && !beer.getCreatedBy().equals(user)) {
+            throw new UnauthorizedAccessException(
+                    "You can modify/delete the beer only if you are Admin or you added the beer");
+        }
     }
 }
