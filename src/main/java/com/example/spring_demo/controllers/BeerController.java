@@ -1,12 +1,12 @@
 package com.example.spring_demo.controllers;
 
-import com.example.spring_demo.exceptions.DublicateEntityException;
+import com.example.spring_demo.exceptions.DuplicateEntityException;
 import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.exceptions.UnauthorizedAccessException;
 import com.example.spring_demo.helpers.AuthenticationHelper;
 import com.example.spring_demo.helpers.BeerMapper;
 import com.example.spring_demo.models.Beer;
-import com.example.spring_demo.models.BeerDTO;
+import com.example.spring_demo.models.BeerDto;
 import com.example.spring_demo.models.User;
 import com.example.spring_demo.services.BeerService;
 import jakarta.validation.Valid;
@@ -21,7 +21,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/beers")
-
 public class BeerController {
 
     private final BeerService beerService;
@@ -38,7 +37,7 @@ public class BeerController {
         this.authenticationHelper = authenticationHelper;
     }
 
-    @GetMapping
+   /* @GetMapping
     public List<Beer> getBeers(@RequestParam(required = false) String name,
                                @RequestParam(required = false) Double minAbv,
                                @RequestParam(required = false) Double maxAbv,
@@ -46,6 +45,11 @@ public class BeerController {
                                @RequestParam(required = false) String sortBy,
                                @RequestParam(required = false) String orderBy) {
         return beerService.getAll(name, minAbv, maxAbv, styleId, sortBy, orderBy);
+    }*/
+
+    @GetMapping
+    public List<Beer> getBeers(){
+        return beerService.getAll();
     }
 
     @GetMapping("/{id}")
@@ -57,8 +61,17 @@ public class BeerController {
         }
     }
 
+    @GetMapping("/search")
+    public Beer getByName(@RequestParam String name) {
+        try {
+            return beerService.getBeerByName(name);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @PostMapping
-    public Beer createBeer(@RequestHeader HttpHeaders header, @Valid @RequestBody BeerDTO beerDTO) {
+    public Beer createBeer(@RequestHeader HttpHeaders header, @Valid @RequestBody BeerDto beerDTO) {
         try {
             User beerCreator = authenticationHelper.tryGetUser(header);
             Beer beer = beerMapper.fromDto(beerDTO);
@@ -66,7 +79,7 @@ public class BeerController {
             return beer;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (DublicateEntityException e) {
+        } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
@@ -74,16 +87,16 @@ public class BeerController {
     }
 
     @PutMapping("/{id}")
-    public Beer updateBeer(@RequestHeader HttpHeaders header, @Valid @RequestBody BeerDTO beerDTO, @PathVariable int id) {
+    public Beer updateBeer(@RequestHeader HttpHeaders header, @Valid @RequestBody BeerDto beerDTO, @PathVariable int id) {
 
         try {
-            Beer beer = beerMapper.fromDto(id, beerDTO);
             User user = authenticationHelper.tryGetUser(header);
+            Beer beer = beerMapper.fromDto(id, beerDTO);
             beerService.update(beer, user);
             return beer;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (DublicateEntityException e) {
+        } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
