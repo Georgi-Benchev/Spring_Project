@@ -1,15 +1,14 @@
 package com.example.spring_demo.services;
 
 import com.example.spring_demo.models.Beer;
+import com.example.spring_demo.models.FilterOptions;
 import com.example.spring_demo.models.User;
 
 import java.util.List;
 
 public interface BeerService {
-    /*
-        List<Beer> getAll(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String orderBy);
-    */
-    List<Beer> getAll();
+
+    List<Beer> getAll(FilterOptions filterOptions);
 
     Beer getBeerById(int id);
 
