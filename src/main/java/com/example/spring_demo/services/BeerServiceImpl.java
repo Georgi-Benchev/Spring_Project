@@ -4,6 +4,7 @@ import com.example.spring_demo.exceptions.DuplicateEntityException;
 import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.exceptions.UnauthorizedAccessException;
 import com.example.spring_demo.models.Beer;
+import com.example.spring_demo.models.FilterOptions;
 import com.example.spring_demo.models.User;
 import com.example.spring_demo.repositorys.BeerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 public class BeerServiceImpl implements BeerService {
 
+
     private final BeerRepository beerRepository;
 
     @Autowired
@@ -21,13 +23,9 @@ public class BeerServiceImpl implements BeerService {
         this.beerRepository = beerRepository;
     }
 
- /*   @Override
-    public List<Beer> getAll(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String orderBy) {
-        return beerRepository.get(name, minAbv, maxAbv, styleId, sortBy, orderBy);
-    }*/
-
-    public List<Beer> getAll() {
-        return beerRepository.getAll();
+    @Override
+    public List<Beer> getAll(FilterOptions filterOptions) {
+        return beerRepository.getAll(filterOptions);
     }
 
     @Override
