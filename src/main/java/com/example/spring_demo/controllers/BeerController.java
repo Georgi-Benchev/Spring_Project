@@ -7,6 +7,7 @@ import com.example.spring_demo.helpers.AuthenticationHelper;
 import com.example.spring_demo.helpers.BeerMapper;
 import com.example.spring_demo.models.Beer;
 import com.example.spring_demo.models.BeerDto;
+import com.example.spring_demo.models.FilterOptions;
 import com.example.spring_demo.models.User;
 import com.example.spring_demo.services.BeerService;
 import jakarta.validation.Valid;
@@ -37,20 +38,18 @@ public class BeerController {
         this.authenticationHelper = authenticationHelper;
     }
 
-   /* @GetMapping
+    @GetMapping
     public List<Beer> getBeers(@RequestParam(required = false) String name,
                                @RequestParam(required = false) Double minAbv,
                                @RequestParam(required = false) Double maxAbv,
                                @RequestParam(required = false) Integer styleId,
                                @RequestParam(required = false) String sortBy,
                                @RequestParam(required = false) String orderBy) {
-        return beerService.getAll(name, minAbv, maxAbv, styleId, sortBy, orderBy);
-    }*/
+        FilterOptions filterOptions = new FilterOptions(name, minAbv, maxAbv, styleId, sortBy, orderBy);
 
-    @GetMapping
-    public List<Beer> getBeers(){
-        return beerService.getAll();
+        return beerService.getAll(filterOptions);
     }
+
 
     @GetMapping("/{id}")
     public Beer getBeer(@PathVariable int id) {
