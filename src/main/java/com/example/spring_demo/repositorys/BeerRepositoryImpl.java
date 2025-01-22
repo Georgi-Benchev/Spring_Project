@@ -2,19 +2,24 @@ package com.example.spring_demo.repositorys;
 
 import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.models.Beer;
-import com.example.spring_demo.models.User;
+import com.example.spring_demo.models.FilterOptions;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-import org.hibernate.SessionFactory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @Repository
 @Primary
 public class BeerRepositoryImpl implements BeerRepository {
+
 
     private final SessionFactory sessionFactory;
 
@@ -25,10 +30,71 @@ public class BeerRepositoryImpl implements BeerRepository {
 
 
     @Override
-    public List<Beer> getAll() {
+    public List<Beer> getAll(FilterOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("From Beer", Beer.class).list();
+            StringBuilder queryString = new StringBuilder("From Beer");
+            List<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            filterOptions.getName().ifPresent(value -> {
+                filters.add("name like :name");
+                params.put("name", String.format("%%%s%%", value));
+            });
+
+            filterOptions.getMinAbv().ifPresent(value -> {
+                filters.add("abv >= :minAbv");
+                params.put("minAbv", value);
+            });
+
+            filterOptions.getMaxAbv().ifPresent(value -> {
+                filters.add("abv <= :maxAbv");
+                params.put("maxAbv", value);
+            });
+
+            filterOptions.getStyleId().ifPresent(value -> {
+                filters.add("style.id = :styleId");
+                params.put("styleId", value);
+            });
+
+            if (!filters.isEmpty()) {
+                queryString
+                        .append(" where ")
+                        .append(String.join(" and ", filters));
+            }
+            queryString.append(generateOrderBy(filterOptions));
+
+
+            Query<Beer> query = session.createQuery(queryString.toString(), Beer.class);
+            query.setProperties(params);
+            return query.list();
         }
+    }
+
+    private String generateOrderBy(FilterOptions filterOptions) {
+        if (filterOptions.getSortBy().isEmpty()) {
+            return "";
+        }
+
+        String orderBy = "";
+        switch (filterOptions.getSortBy().get()) {
+            case "name":
+                orderBy = "name";
+                break;
+            case "abv":
+                orderBy = "abv";
+                break;
+            case "style":
+                orderBy = "style.name";
+                break;
+        }
+
+        orderBy = String.format(" order by %s", orderBy);
+
+        if (filterOptions.getOrderBy().isPresent() && filterOptions.getOrderBy().get().equalsIgnoreCase("desc")) {
+            orderBy = String.format("%s desc", orderBy);
+        }
+
+        return orderBy;
     }
 
     @Override
@@ -55,7 +121,7 @@ public class BeerRepositoryImpl implements BeerRepository {
     }
 
     @Override
-    public void create(Beer beer, User user) { // remove user from interface
+    public void create(Beer beer) { // remove user from interface
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(beer);
