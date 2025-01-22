@@ -19,9 +19,10 @@ public class BeerDto {
     public BeerDto() {
     }
 
-    public BeerDto(String name, double abv) {
+    public BeerDto(String name, double abv, int styleId) {
         this.name = name;
         this.abv = abv;
+        this.styleId = styleId;
     }
 
     public String getName() {
