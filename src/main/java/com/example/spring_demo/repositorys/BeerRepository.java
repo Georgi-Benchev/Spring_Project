@@ -14,7 +14,7 @@ public interface BeerRepository{
 
     Beer getByName(String name);
 
-    void create(Beer beer, User user);
+    void create(Beer beer);
 
     void update(Beer beer, int id);
 
