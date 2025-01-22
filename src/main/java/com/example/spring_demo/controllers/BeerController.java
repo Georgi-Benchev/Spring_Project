@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,8 +32,7 @@ public class BeerController {
 
     @Autowired
     public BeerController(BeerService beerService, BeerMapper beerMapper, AuthenticationHelper authenticationHelper) {
-       /* ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfiguration.class);
-        this.beerService = context.getBean(BeerService.class);*/
+
         this.beerService = beerService;
         this.beerMapper = beerMapper;
         this.authenticationHelper = authenticationHelper;
@@ -70,12 +70,12 @@ public class BeerController {
     }
 
     @PostMapping
-    public Beer createBeer(@RequestHeader HttpHeaders header, @Valid @RequestBody BeerDto beerDTO) {
+    public ResponseEntity<Beer> createBeer(@RequestHeader HttpHeaders header, @Valid @RequestBody BeerDto beerDTO) {
         try {
             User beerCreator = authenticationHelper.tryGetUser(header);
             Beer beer = beerMapper.fromDto(beerDTO);
-            beerService.create(beer, beerCreator);
-            return beer;
+            Beer theNewBeer = beerService.create(beer, beerCreator);
+            return ResponseEntity.status(HttpStatus.CREATED).body(theNewBeer);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
