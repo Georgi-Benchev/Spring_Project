@@ -36,8 +36,8 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public Beer create(Beer beer, User user) {
-        boolean idAlreadyExists = true;
         boolean nameAlreadyExists = true;
+        boolean idAlreadyExists = true;
 
         try {
             beerRepository.getBeerById(beer.getId());
@@ -51,13 +51,13 @@ public class BeerServiceImpl implements BeerService {
         }
 
         if (idAlreadyExists) {
-            throw new DuplicateEntityException("Beer", "id", String.valueOf(beer.getId()));
+            throw new DuplicateEntityException("Beer", beer.getId());
         }
         if (nameAlreadyExists) {
             throw new DuplicateEntityException("Beer", "name", beer.getName());
         }
         beer.setCreatedBy(user);
-        beerRepository.create(beer, user);
+        beerRepository.create(beer);
         return beer;
     }
 
@@ -97,7 +97,9 @@ public class BeerServiceImpl implements BeerService {
     }
 
     private void validateUser(User user, int id) {
+
         Beer beer = beerRepository.getBeerById(id);
+
         if (!user.isAdmin() && !beer.getCreatedBy().equals(user)) {
             throw new UnauthorizedAccessException(
                     "You can modify/delete the beer only if you are Admin or you added the beer");
