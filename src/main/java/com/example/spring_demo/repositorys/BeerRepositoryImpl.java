@@ -9,17 +9,14 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @Repository
 @Primary
 public class BeerRepositoryImpl implements BeerRepository {
-
 
     private final SessionFactory sessionFactory;
 
@@ -27,7 +24,6 @@ public class BeerRepositoryImpl implements BeerRepository {
     public BeerRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-
 
     @Override
     public List<Beer> getAll(FilterOptions filterOptions) {
@@ -63,7 +59,6 @@ public class BeerRepositoryImpl implements BeerRepository {
             }
             queryString.append(generateOrderBy(filterOptions));
 
-
             Query<Beer> query = session.createQuery(queryString.toString(), Beer.class);
             query.setProperties(params);
             return query.list();
@@ -89,7 +84,6 @@ public class BeerRepositoryImpl implements BeerRepository {
         }
 
         orderBy = String.format(" order by %s", orderBy);
-
         if (filterOptions.getOrderBy().isPresent() && filterOptions.getOrderBy().get().equalsIgnoreCase("desc")) {
             orderBy = String.format("%s desc", orderBy);
         }
