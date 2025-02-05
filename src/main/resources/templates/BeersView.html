@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beer - List</title>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/smalLogo.png}" type="image/png">
+</head>
+<body>
+<header>
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 50px;">
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+        <h3>
+            <a th:href="@{/home}">Home</a>
+            | <a th:href="@{/mvc/beers}">Beers</a>
+            | <a th:href="@{/about}">About</a>
+        </h3>
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+    </div>
+</header>
+
+<div class="body-content">
+    <h1>Beer list</h1>
+    <table class="table">
+        <thead class="header">
+        <tr class="row">
+            <th class="header-cell">Beer Name</th>
+            <th class="header-cell">ABV (%)</th>
+            <th class="header-cell">Style</th>
+        </tr>
+        </thead>
+        <tbody class="rowGroup">
+        <tr class="row" th:each="beer : ${beers}">
+            <td class="cell">
+                <a th:href="@{/mvc/beers/{id}(id=${beer.getId()})}" th:text="${beer.getName()}">Default beer name</a>
+            </td>
+            <td class="cell" th:text="${beer.getAbv()}">0.0</td>
+            <td class="cell" th:text="${beer.getStyle().getName()}">Style default</td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<footer>
+    <small>©️ Copyright 2024, BeerTag</small>
+</footer>
+</body>
+</html>
