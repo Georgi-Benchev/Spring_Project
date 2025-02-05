@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="Beer + ' ' + ${beer.getName()}">Beer - List</title>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/smalLogo.png}" type="image/png">
+</head>
+
+<body>
+<header>
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 50px;">
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+        <h3>
+            | <a th:href="@{/mvc/beers}">Back to Beers</a> |
+        </h3>
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+    </div>
+</header>
+
+<div class="body-content">
+    <h1 th:text="${beer.getName()}">Beer</h1>
+    <table class="table">
+        <thead class="header">
+        <tr class="row">
+            <th class="header-cell">Beer Name</th>
+            <th class="header-cell">ABV (%)</th>
+            <th class="header-cell">Style</th>
+            <th class="header-cell">Created By</th>
+        </tr>
+        </thead>
+        <tbody class="rowGroup">
+        <tr class="row">
+            <td class="cell" th:text="${beer.getName()}">Beer name</td>
+            <td class="cell" th:text="${beer.getAbv()}">0.0</td>
+            <td class="cell" th:text="${beer.getStyle().getName()}">Style default</td>
+            <td class="cell" th:text="${beer.getCreatedBy().getUsername()}">JohnDoe</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer>
+    <small>©️ Copyright 2024, BeerTag</small>
+</footer>
+</body>
+</html>
