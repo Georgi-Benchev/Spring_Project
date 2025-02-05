@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not found</title>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/smalLogo.png}" type="image/png">
+</head>
+<body>
+<!--<header>-->
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 50px;">
+
+        <div>
+            <h2 th:text="#{error.not-found}">The page you're looking for is not found!</h2>
+            <h3 class="label-error" th:text="${error}">Error placeholder</h3>
+        </div>
+        <img th:src="@{/images/NotFound.png}" alt="Not found image" style="width: 700px; height: auto;">
+
+        <div>
+            <h3>
+                <a th:href="@{/home}">Back To Home</a>
+            </h3>
+        </div>
+    </div>
+<!--</header>-->
+
+
+<footer>
+    <small>©️ Copyright 2024, BeerTag</small>
+</footer>
+</body>
+</html>
