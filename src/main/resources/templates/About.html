@@ -2,25 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BeerTag - About</title>
-    <link rel="stylesheet" href="../static/css/styles.css"/>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/smalLogo.png}" type="image/png">
 </head>
 <body>
 <!-- The header and footer section are the same in each page -->
 <header>
     <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 50px;">
-        <img src="../static/images/logo.png" alt="BeerTag Logo" style="width: 100px; height: auto;">
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
         <h3>
-            <a href="./HomeView.html">Home</a>
-            | <a href="./BeersView.html">Beers</a>
-            | <a href="./About.html">About</a>
+            <a th:href="@{/home}">Home</a>
+            | <a th:href="@{/mvc/beers}">Beers</a>
+            | <a th:href="@{/about}">About</a>
         </h3>
-        <img src="../static/images/logo.png" alt="BeerTag Logo" style="width: 100px; height: auto;">
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
     </div>
 </header>
 <div class="body-content">
     <h1>About BeerTag!</h1>
-    <p>BeerTag is a web application designed to help beer enthusiasts discover new beers and learn more about their favorite brands.</p>
+    <p>BeerTag is a web application designed to help beer enthusiasts discover new beers and learn more about their
+        favorite brands.</p>
     <p>Our mission is to:</p>
     <ul>
         <li>Provide detailed information about beers, including their name, alcohol by volume (ABV), and style.</li>
