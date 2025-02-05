@@ -2,19 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BeerTag - Home</title>
-    <link rel="stylesheet" href="../static/css/styles.css"/>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/smalLogo.png}" type="image/png">
 </head>
 <body>
 <header>
     <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 50px;">
-        <img src="../static/images/logo.png" alt="BeerTag Logo" style="width: 100px; height: auto;">
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
         <h3>
-            <a href="./HomeView.html">Home</a>
-            | <a href="./BeersView.html">Beers</a>
-            | <a href="./About.html">About</a>
+            <a th:href="@{/home}">Home</a>
+            | <a th:href="@{/mvc/beers}">Beers</a>
+            | <a th:href="@{/about}">About</a>
         </h3>
-        <img src="../static/images/logo.png" alt="BeerTag Logo" style="width: 100px; height: auto;">
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
     </div>
 </header>
 <div class="body-content">
