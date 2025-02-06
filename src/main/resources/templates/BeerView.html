@@ -10,10 +10,10 @@
 
 <body>
 <header>
-    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 50px;">
+    <div class="header-layout">
         <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
-        <h3>
-            | <a th:href="@{/mvc/beers}">Back to Beers</a> |
+        <h3 class="action-buttons">
+            <a class="btn-primary" th:href="@{/mvc/beers}">Back to Beers</a>
         </h3>
         <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
     </div>
@@ -30,6 +30,7 @@
             <th class="header-cell">Created By</th>
         </tr>
         </thead>
+
         <tbody class="rowGroup">
         <tr class="row">
             <td class="cell" th:text="${beer.getName()}">Beer name</td>
@@ -39,6 +40,15 @@
         </tr>
         </tbody>
     </table>
+
+    <div class="action-buttons">
+        <h3>
+            <a th:href="@{/mvc/beers/{id}/update(id =${beer.getId()})}" class="btn-primary">Update Beer</a>
+        </h3>
+        <h3>
+            <a th:href="@{/mvc/beers/{id}/delete(id =${beer.getId()})}" class="btn-danger">Delete</a>
+        </h3>
+    </div>
 </div>
 
 <footer>
