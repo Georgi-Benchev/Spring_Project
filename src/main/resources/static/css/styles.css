@@ -1,3 +1,14 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.centered-image {
+    display: flex;height: 100vh; /* Takes the full height of the viewport */
+    padding-left: 28%; /* Adds space from the top (adjust as needed) */
+
+}
+
 header {
     text-align: center;
     padding: 10px 50px 10px 44px;
@@ -14,6 +25,13 @@ a {
     color: #007bff;
 }
 
+.header-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+}
+
 .body-content {
     text-align: center;
     padding: 10px 50px 50px 50px;
@@ -23,7 +41,7 @@ a {
     display: table;
     margin-left: auto;
     margin-right: auto;
-    border: 1px solid lightgrey;
+    border: 2px solid lightgrey;
 }
 
 .header {
@@ -53,8 +71,24 @@ a {
     border-bottom: 1px solid #dee2e6;
 }
 
+
 .margin12 {
     margin: 12px 0px 12px 0px;
+}
+
+.form-group {
+    width: 100%; /* Ensure the form group takes up full width */
+    max-width: 300px; /* Controls max width of the form groups */
+    text-align: center; /* Centers the content inside the form group */
+
+}
+
+.form-container {
+    display: flex;
+    justify-content: center; /* Horizontally center the form */
+    align-items: flex-start; /* Vertically center the form */
+    height: 60vh; /* Full viewport height */
+    padding: 10px 20px;
 }
 
 .form-label {
@@ -65,10 +99,15 @@ a {
     margin: 12px 0px 12px 0px;
     width: 200px;
     height: 25px;
+    padding-right: 5px; /* Ensure consistent padding */
 }
 
 .form-error {
     color: #dc3545;
+    min-height: 20px; /* Ensures all error messages are the same height */
+    display: block; /* Ensures error messages are shown on a new line */
+    margin-top: 5px; /* Space between input and error message */
+    font-size: 14px; /* Adjust font size for error messages */
 }
 
 .btn-primary {
@@ -93,4 +132,65 @@ a.nav {
 
 .label-error {
     color: red
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Adds space between buttons */
+}
+
+.action-buttons h3 {
+    margin: 0; /* Remove default margin from <h3> */
+}
+
+.btn-primary, .btn-danger {
+    padding: 5px 10px; /* Adjust padding for better size */
+    font-size: 18px; /* Font size */
+    font-weight: 600; /* Slightly bolder text */
+    color: black; /* Default text color */
+    background-color: white; /* White background */
+    border: 1px solid; /* 2px border */
+    text-decoration: none; /* Remove underline from links */
+    text-align: center;
+    border-radius: 25px; /* Rounded corners */
+    display: inline-flex; /* Enables flexbox layout inside the button */
+    justify-content: center; /* Centers text horizontally */
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary {
+    border: 1px solid #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #007bff; /* Blue background on hover */
+    color: white; /* White text on hover */
+    transform: translateY(-2px); /* Slightly lift on hover */
+}
+
+.btn-danger {
+    border-color: #dc3545; /* Red border */
+}
+
+.btn-danger:hover {
+    background-color: #dc3545; /* Red background on hover */
+    color: white; /* White text on hover */
+    transform: translateY(-2px); /* Slightly lift on hover */
+}
+
+.btn-primary:focus {
+    outline: none; /* Remove focus outline */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Focus ring for accessibility */
+}
+
+.btn-danger:focus {
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.5); /* Red focus ring for .btn-danger */
+}
+
+.btn-primary.active {
+    background-color: #007bff; /* Blue background for active button */
+    color: white; /* White text for active button */
+    border-color: #007bff; /* Blue border for active button */
 }
