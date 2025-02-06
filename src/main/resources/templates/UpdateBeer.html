@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update beer</title>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/smalLogo.png}" type="image/png">
+</head>
+<body>
+<header>
+    <div class="header-layout">
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+        <h3 class="action-buttons">
+            <a class="btn-primary" th:href="@{/mvc/beers}">Back to Beers</a>
+        </h3>
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+    </div>
+</header>
+<div class="form-container margin12">
+
+    <form th:fragment="beer-form" action="#" th:action="@{__${requestURI}__}" th:object="${beer}" method="post">
+
+        <div class="form-group">
+            <label class="form-label" th:text="#{beer.label.name}">Beer</label>
+            <input class="form-input" type="text" th:field="*{name}"/>
+            <label class="form-error" th:errors="*{name}">Name error placeholder! </label>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" th:text="#{beer.label.abv}">ABV</label>
+            <input class="form-input" type="text" th:field="*{abv}"/>
+            <label class="form-error" th:errors="*{abv}">ABV error placeholder! </label>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" th:text="#{beer.label.style}">Style</label>
+            <select class="form-input" th:field="*{styleId}">
+                <option th:each="style : ${styles}"
+                        th:value="${style.id}"
+                        th:text="${style.name}">
+                    Default Style
+                </option>
+            </select>
+            <label class="form-error" th:errors="*{styleId}">Style error placeholder!</label>
+        </div>
+
+        <div class="form-group text-center">
+            <input type="submit" class="btn btn-primary btn-lg" value="Update"/>
+        </div>
+    </form>
+</div>
+<footer>
+    <small>©️ Copyright 2024, BeerTag</small>
+</footer>
+</body>
+</html>
