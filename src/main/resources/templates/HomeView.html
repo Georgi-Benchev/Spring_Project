@@ -9,12 +9,12 @@
 </head>
 <body>
 <header>
-    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 50px;">
+    <div class="header-layout">
         <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
-        <h3>
-            <a th:href="@{/home}">Home</a>
-            | <a th:href="@{/mvc/beers}">Beers</a>
-            | <a th:href="@{/about}">About</a>
+        <h3 class="action-buttons">
+            <a class="btn-primary active" th:href="@{/home}">Home</a>
+             <a class="btn-primary" th:href="@{/mvc/beers}">Beers</a>
+             <a class="btn-primary" th:href="@{/about}">About</a>
         </h3>
         <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
     </div>
