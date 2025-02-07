@@ -96,7 +96,7 @@ public class BeerMvcController {
     }
 
     @PostMapping("/{id}/update")
-    public String updateBeer(@Valid @ModelAttribute("beer") BeerDto beerDto, @PathVariable int id, BindingResult errors, Model model) {
+    public String updateBeer(@Valid @ModelAttribute("beer") BeerDto beerDto, BindingResult errors, @PathVariable int id, Model model) {
         if (errors.hasErrors()) {
             return "UpdateBeer";
         }
