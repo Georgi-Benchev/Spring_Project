@@ -51,4 +51,13 @@ public class UserRepositoryImpl implements UserRepository {
             throw new EntityNotFoundException("User", "username", username);
         }
     }
+
+    @Override
+    public void createUser(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.persist(user);
+            session.getTransaction().commit();
+        }
+    }
 }
