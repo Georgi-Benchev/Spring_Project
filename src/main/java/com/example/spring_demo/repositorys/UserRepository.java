@@ -10,4 +10,6 @@ public interface UserRepository {
     User getById(int id);
 
     User getByUsername(String username);
+
+    void createUser(User user);
 }
