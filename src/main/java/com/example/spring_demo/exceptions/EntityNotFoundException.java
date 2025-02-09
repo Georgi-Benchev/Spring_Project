@@ -8,4 +8,8 @@ public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(String type, int id) {
         super(String.format("%s with id %d not found.", type, id));
     }
+
+    public EntityNotFoundException() {
+        super("Invalid input");
+    }
 }
