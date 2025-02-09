@@ -96,11 +96,16 @@ a {
     padding: 25px;
 }
 
+.form-button {
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
 .form-label {
     font-weight: bold;
-    display: block; /* Make label take a full line */
-    margin-bottom: 5px; /* Space between label and input */
-    margin-top: 15px; /* Space between label and input */
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 15px;
 }
 
 .form-input {
