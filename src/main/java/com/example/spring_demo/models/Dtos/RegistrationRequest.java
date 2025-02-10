@@ -1,27 +1,27 @@
-package com.example.spring_demo.models;
+package com.example.spring_demo.models.Dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
 public class RegistrationRequest {
 
-    @NotEmpty
+    @NotEmpty(message = "Username can't be empty.")
     private String username;
 
-    @NotEmpty
+    @NotEmpty(message = "Password can't be empty.")
     private String password;
 
-    @NotEmpty
+    @NotEmpty(message = "Password confirmation can't be empty.")
     private String repeatPassword;
 
-    @NotEmpty
+    @NotEmpty(message = "Email can't be empty.")
     @Email
     private String email;
 
-    @NotEmpty
+    @NotEmpty(message = "First name can't be empty.")
     private String first_name;
 
-    @NotEmpty
+    @NotEmpty(message = "Last name can't be empty.")
     private String last_name;
 
     public RegistrationRequest() {

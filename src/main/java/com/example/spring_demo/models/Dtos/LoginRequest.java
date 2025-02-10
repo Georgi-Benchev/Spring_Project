@@ -1,13 +1,13 @@
-package com.example.spring_demo.models;
+package com.example.spring_demo.models.Dtos;
 
 import jakarta.validation.constraints.NotEmpty;
 
 public class LoginRequest {
 
-    @NotEmpty
+    @NotEmpty(message = "Username can't be empty.")
     private String username;
 
-    @NotEmpty
+    @NotEmpty(message = "Password can't be empty.")
     private String password;
 
     public LoginRequest() {
