@@ -3,10 +3,11 @@ package com.example.spring_demo.controllers;
 import com.example.spring_demo.exceptions.DuplicateEntityException;
 import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.helpers.UserMapper;
-import com.example.spring_demo.models.LoginRequest;
-import com.example.spring_demo.models.RegistrationRequest;
+import com.example.spring_demo.models.Dtos.LoginRequest;
+import com.example.spring_demo.models.Dtos.RegistrationRequest;
 import com.example.spring_demo.models.User;
 import com.example.spring_demo.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class AuthenticationMvc {
     }
 
     @PostMapping("/login")
-    public String executeLoginRequest(@Valid @ModelAttribute("loginRequest") LoginRequest loginRequest, BindingResult errors) {
+    public String executeLoginRequest(@Valid @ModelAttribute("loginRequest") LoginRequest loginRequest, BindingResult errors, HttpSession session) {
         if (errors.hasErrors()) {
             return "Login";
         }
@@ -46,12 +47,22 @@ public class AuthenticationMvc {
             if (!user.getPassword().equals(loginRequest.getPassword())) {
                 throw new EntityNotFoundException();
             }
-            return "HomeView";
+            session.setAttribute("currentUser", loginRequest.getUsername());
+            return "redirect:/home";
         } catch (EntityNotFoundException e) {
             errors.rejectValue("username", "username.mismatch", "invalid username or password");
-            errors.rejectValue("password", "password.mismatch", "invalid username or password");
             return "Login";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        try {
+            session.invalidate();
+        }catch (Exception ignored){
+
+        }
+        return "redirect:/home";
     }
 
     @GetMapping("/register")
@@ -62,7 +73,6 @@ public class AuthenticationMvc {
 
     @PostMapping("/register")
     public String executeRegistrationRequest(@Valid @ModelAttribute("RegistrationRequest") RegistrationRequest registrationRequest, BindingResult errors) {
-        //todo validate username and password and return cookie
         if (!registrationRequest.getPassword().equals(registrationRequest.getRepeatPassword())) {
             errors.rejectValue("repeatPassword", "passwords.mismatch", "The password was incorrect");
         }
@@ -71,13 +81,10 @@ public class AuthenticationMvc {
         }
         try {
             userService.createUser(userMapper.getUserFromDto(registrationRequest));
+            return "Login";
         } catch (DuplicateEntityException e) {
             errors.rejectValue("username", "username.mismatch", "Username already taken");
             return "Registration";
         }
-
-        return "HomeView";
     }
-
-
 }
