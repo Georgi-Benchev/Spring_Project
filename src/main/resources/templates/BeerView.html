@@ -43,10 +43,12 @@
 
     <div class="action-buttons">
         <h3>
-            <a th:href="@{/mvc/beers/{id}/update(id =${beer.getId()})}" class="btn-primary form-button">Update Beer</a>
+            <a th:if="${user.getId()==beer.getCreatedBy().getId() || user.isAdmin()}"
+               th:href="@{/mvc/beers/{id}/update(id =${beer.getId()})}" class="btn-primary form-button">Update Beer</a>
         </h3>
         <h3>
-            <a th:href="@{/mvc/beers/{id}/delete(id =${beer.getId()})}" class="btn-danger form-button">Delete</a>
+            <a th:if="${user.getId()==beer.getCreatedBy().getId() || user.isAdmin()}"
+               th:href="@{/mvc/beers/{id}/delete(id =${beer.getId()})}" class="btn-danger form-button">Delete</a>
         </h3>
     </div>
 </div>
