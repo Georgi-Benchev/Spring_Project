@@ -13,15 +13,18 @@
         <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
         <h3 class="action-buttons">
             <a class="btn-primary active" th:href="@{/home}">Home</a>
-             <a class="btn-primary" th:href="@{/mvc/beers}">Beers</a>
-             <a class="btn-primary" th:href="@{/about}">About</a>
-             <a class="btn-primary" th:href="@{/auth/login}">Login</a>
+            <a class="btn-primary" th:href="@{/mvc/beers}">Beers</a>
+            <a class="btn-primary" th:href="@{/about}">About</a>
+            <a class="btn-primary" th:if="${isUserLoggedIn}" th:href="@{/auth/logout}">Logout</a>
+            <a class="btn-primary" th:unless="${isUserLoggedIn}" th:href="@{/auth/login}">Login</a>
+
         </h3>
         <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
     </div>
 </header>
 <div class="body-content">
-    <h1>Welcome to BeerTag!</h1>
+    <h1 th:if="${isUserLoggedIn}" th:text="'Wellcome back '+ ${user.username}">Welcome back John!</h1>
+    <h1 th:unless="${isUserLoggedIn}">Welcome to BeerTag!</h1>
     <p>BeerTag is your ultimate destination for discovering and exploring different types of beers.</p>
     <p>Here, you can:</p>
     <ul>
@@ -31,7 +34,7 @@
     </ul>
 </div>
 
-<h3 class="center-h3">
+<h3 th:if="${!isUserLoggedIn}" class="center-h3">
     <p>Not a user yet?</p>
     <a class="btn-primary" th:href="@{/auth/register}">Register</a>
 </h3>
