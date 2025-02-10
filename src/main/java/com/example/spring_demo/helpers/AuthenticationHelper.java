@@ -4,6 +4,7 @@ import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.exceptions.UnauthorizedAccessException;
 import com.example.spring_demo.models.User;
 import com.example.spring_demo.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -29,5 +30,13 @@ public class AuthenticationHelper {
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("User", "username", headers.getFirst(AUTHORIZATION));
         }
+    }
+
+    public User tryGetUser(HttpSession session) {
+        String currentUser = (String) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            throw new UnauthorizedAccessException("You are not authorized to perform this action");
+        }
+        return userService.getByUsername(currentUser);
     }
 }
