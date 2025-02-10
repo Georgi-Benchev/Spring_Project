@@ -18,7 +18,7 @@
     </div>
 </header>
 <div class="form-container margin12">
-    <form th:fragment="beer-form" action="#" th:action="@{__${requestURI}__}" th:object="${beer}" method="post">
+    <form th:fragment="beer-form" action="#" th:action="@{__${requestURI}__}" th:object="${beer}" th:method="put">
 
         <div class="form-group">
             <label class="form-label" th:text="#{beer.label.name}">Beer</label>

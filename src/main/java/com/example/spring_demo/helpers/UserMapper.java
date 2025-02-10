@@ -1,7 +1,7 @@
 package com.example.spring_demo.helpers;
 
 
-import com.example.spring_demo.models.RegistrationRequest;
+import com.example.spring_demo.models.Dtos.RegistrationRequest;
 import com.example.spring_demo.models.User;
 import org.springframework.stereotype.Component;
 
