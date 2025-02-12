@@ -81,9 +81,12 @@ public class BeerRepositoryImpl implements BeerRepository {
             case "style":
                 orderBy = "style.name";
                 break;
+            default:
+                return "";
         }
 
         orderBy = String.format(" order by %s", orderBy);
+
         if (filterOptions.getOrderBy().isPresent() && filterOptions.getOrderBy().get().equalsIgnoreCase("desc")) {
             orderBy = String.format("%s desc", orderBy);
         }
