@@ -5,6 +5,7 @@ import com.example.spring_demo.exceptions.EntityNotFoundException;
 import com.example.spring_demo.helpers.AuthenticationHelper;
 import com.example.spring_demo.helpers.BeerMapper;
 import com.example.spring_demo.models.*;
+import com.example.spring_demo.models.Dtos.FilterOptionsDto;
 import com.example.spring_demo.services.BeerService;
 import com.example.spring_demo.services.StyleService;
 import com.example.spring_demo.services.UserService;
@@ -38,9 +39,17 @@ public class BeerMvcController {
     }
 
     @GetMapping
-    public ModelAndView getAllBeers() {
+    public ModelAndView getAllBeers(@ModelAttribute("filterOptions") FilterOptionsDto filterOptionsDto,BindingResult errors) {
         ModelAndView modelAndView = new ModelAndView();
-        FilterOptions filterOptions = new FilterOptions(null, null, null, null, null, null);
+        if (errors.hasErrors()) {
+            return modelAndView;
+        }
+        FilterOptions filterOptions = new FilterOptions( filterOptionsDto.getName(),
+                filterOptionsDto.getMinAbv(),
+                filterOptionsDto.getMaxAbv(),
+                filterOptionsDto.getStyleId(),
+                filterOptionsDto.getSortBy(),
+                filterOptionsDto.getOrderBy());
         List<Beer> beers = beerService.getAll(filterOptions);
         modelAndView.addObject("beers", beers);
         modelAndView.setViewName("BeersView");
