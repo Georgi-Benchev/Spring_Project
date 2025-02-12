@@ -23,25 +23,69 @@
 
 <div class="body-content">
     <h1>Beer list</h1>
-    <table class="table">
-        <thead class="header">
-        <tr class="row">
-            <th class="header-cell">Beer Name</th>
-            <th class="header-cell">ABV (%)</th>
-            <th class="header-cell">Style</th>
-        </tr>
-        </thead>
+    <form action="#" th:action="@{/mvc/beers}" th:object="${filterOptions}" th:method="get">
 
-        <tbody class="rowGroup">
-        <tr class="row" th:each="beer : ${beers}">
-            <td class="cell">
-                <a th:href="@{/mvc/beers/{id}(id=${beer.getId()})}" th:text="${beer.getName()}">Default beer name</a>
-            </td>
-            <td class="cell" th:text="${beer.getAbv()}">0.0</td>
-            <td class="cell" th:text="${beer.getStyle().getName()}">Style default</td>
-        </tr>
-        </tbody>
-    </table>
+        <div class="form-container">
+            <input placeholder="Beer name" class="form-input" type="text" th:field="*{name}"/>
+            <input placeholder="Min ABV" class="form-input" type="number" th:field="*{minAbv}" min="0" max="100"
+                   step="0.1"/>
+            <input placeholder="Max ABV" class="form-input" type="number" th:field="*{maxAbv}" min="0" max="100"
+                   step="0.1"/>
+
+            <select class="form-input" th:field="*{styleId}">
+                <option value="">Any Style</option>
+                <option th:each="style : ${styles}"
+                        th:value="${style.id}"
+                        th:text="${style.name}">
+                    Default Style
+                </option>
+            </select>
+
+        </div>
+        <div class="form-container">
+            <select class="form-input" th:field="*{sortBy}">
+                <option value="">Sort By</option>
+                <option th:value="name" th:text="Name"></option>
+                <option th:value="abv" th:text="ABV"></option>
+                <option th:value="style" th:text="Style"></option>
+            </select>
+            <select class="form-input" th:field="*{orderBy}">
+                <option value="">Order By</option>
+                <option th:value="asc" th:text="Ascending"></option>
+                <option th:value="desc" th:text="Descending"></option>
+            </select>
+        </div>
+        <div class="action-buttons">
+            <input type="submit" class="btn-primary form-button" value="Search"/>
+        </div>
+    </form>
+
+    <div th:if="${beers.isEmpty()}">
+        <h2 th:text="#{beers.title.empty}">No Beers</h2>
+    </div>
+    <div th:unless="${beers.isEmpty()}">
+
+        <table class="table">
+            <thead class="header">
+            <tr class="row">
+                <th class="header-cell">Beer Name</th>
+                <th class="header-cell">ABV (%)</th>
+                <th class="header-cell">Style</th>
+            </tr>
+            </thead>
+
+            <tbody class="rowGroup">
+            <tr class="row" th:each="beer : ${beers}">
+                <td class="cell">
+                    <a th:href="@{/mvc/beers/{id}(id=${beer.getId()})}" th:text="${beer.getName()}">Default beer
+                        name</a>
+                </td>
+                <td class="cell" th:text="${beer.getAbv()}">0.0</td>
+                <td class="cell" th:text="${beer.getStyle().getName()}">Style default</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <h3 class="action-buttons">
         <a class="btn-primary" th:href="@{/mvc/beers/new}">Create Beer</a>
