@@ -11,13 +11,12 @@ public class FilterOptions {
     private Optional<String> sortBy;
     private Optional<String> orderBy;
 
-
     public FilterOptions(String name,
-                         Double minAbv,
-                         Double maxAbv,
-                         Integer styleId,
-                         String sortBy,
-                         String orderBy) {
+                            Double minAbv,
+                            Double maxAbv,
+                            Integer styleId,
+                            String sortBy,
+                            String orderBy) {
         this.name = Optional.ofNullable(name);
         this.minAbv = Optional.ofNullable(minAbv);
         this.maxAbv = Optional.ofNullable(maxAbv);
@@ -25,7 +24,6 @@ public class FilterOptions {
         this.sortBy = Optional.ofNullable(sortBy);
         this.orderBy = Optional.ofNullable(orderBy);
     }
-
 
     public Optional<String> getName() {
         return name;

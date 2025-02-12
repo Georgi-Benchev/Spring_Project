@@ -18,8 +18,8 @@
     </div>
 </header>
 <div class="form-container margin12">
-    <form th:fragment="beer-form" action="#" th:action="@{__${requestURI}__}" th:object="${beer}" th:method="put">
-
+    <form action="#" th:action="@{__${requestURI}__}" th:object="${beer}" th:method="post">
+        <!-- th:fragment="beer-form"-->
         <div class="form-group">
             <label class="form-label" th:text="#{beer.label.name}">Beer</label>
             <input class="form-input" type="text" th:field="*{name}" placeholder="Enter beer name"/>
@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label class="form-label" th:text="#{beer.label.abv}">ABV</label>
-            <input class="form-input" type="text" th:field="*{abv}" placeholder="Enter ABV"/>
+            <input class="form-input" type="number" th:field="*{abv}" placeholder="Enter ABV"/>
             <label class="form-error" th:errors="*{abv}">ABV error placeholder! </label>
         </div>
 
